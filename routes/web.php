@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrearListaActividades;
+use App\Http\Controllers\MaquetaPrincipalController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Requests\RegisterUserRequest;
@@ -19,12 +22,9 @@ Route::get('/', function (){
     return view('welcome');
 });
 
-/*Route::get('/dashboard', LoginRegisterController::class);*/
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [MaquetaPrincipalController::class, 'funciondashboard']
+)->middleware(['auth', 'verified'])->name('dashboard');
 
-/*Route::get('/', autorizacion::class);*/
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -32,3 +32,11 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/actividades', [CrearListaActividades::class, 'funcioncrearlistaactividades']
+)->name('actividades');
+
+Route::post('/actividades', [CrearListaActividades::class, 'almacenarlistaactividades']
+)->name('almacenarlistaactividades');
+
+Route::get('/showuser', [Controller::class, 'showuser']);
